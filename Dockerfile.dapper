@@ -27,7 +27,7 @@ ENV DOCKER_URL_amd64=${LOCAL_DOWNLOAD_SERVER}/docker/x86_64/docker-1.10.3 \
 
 RUN wget -O - ${!DOCKER_URL} > /usr/bin/docker && chmod +x /usr/bin/docker
 
-ENV DAPPER_SOURCE /go/src/github.com/rancher/scale-subscriber/
+ENV DAPPER_SOURCE /go/src/github.com/niusmallnan/scale-subscriber/
 ENV DAPPER_OUTPUT ./bin ./dist
 ENV DAPPER_DOCKER_SOCKET true
 ENV TRASH_CACHE ${DAPPER_SOURCE}/.trash-cache
