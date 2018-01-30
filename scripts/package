@@ -1,18 +1,24 @@
 #!/bin/bash
 set -e
 
-ARCH=${ARCH:?"ARCH not set"}
+source $(dirname $0)/version
+
+ARCH=${ARCH:-"amd64"}
 SUFFIX=""
 [ "${ARCH}" != "amd64" ] && SUFFIX="_${ARCH}"
-
-source $(dirname $0)/version
 
 cd $(dirname $0)/../package
 
 TAG=${TAG:-${VERSION}${SUFFIX}}
 REPO=${REPO:-rancher}
 
-cp ../bin/scale-subscriber .
-docker build -t ${REPO}/scale-subscriber:${TAG} .
+if echo $TAG | grep -q dirty; then
+    TAG=dev
+fi
 
-echo Built ${REPO}/scale-subscriber:${TAG}
+cp ../bin/training-demo .
+
+IMAGE=${REPO}/training-demo:${TAG}
+docker build -t ${IMAGE} .
+echo ${IMAGE} > ../dist/images
+echo Built ${IMAGE}

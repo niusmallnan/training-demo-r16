@@ -3,10 +3,10 @@ package main
 import (
 	"os"
 
-	log "github.com/Sirupsen/logrus"
-	"github.com/niusmallnan/scale-subscriber/config"
-	"github.com/niusmallnan/scale-subscriber/healthcheck"
-	"github.com/niusmallnan/scale-subscriber/rancherevents"
+	"github.com/niusmallnan/training-demo/config"
+	"github.com/niusmallnan/training-demo/healthcheck"
+	"github.com/niusmallnan/training-demo/rancherevents"
+	log "github.com/sirupsen/logrus"
 	"github.com/urfave/cli"
 )
 
@@ -14,7 +14,7 @@ var VERSION = "v0.1.0-dev"
 
 func main() {
 	app := cli.NewApp()
-	app.Name = "scale-subscriber"
+	app.Name = "training-demo"
 	app.Version = VERSION
 	app.Usage = "You need help!"
 	app.Action = launch

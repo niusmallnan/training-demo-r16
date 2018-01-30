@@ -2,7 +2,7 @@ TARGETS := $(shell ls scripts)
 
 .dapper:
 	@echo Downloading dapper
-	@curl -sL http://192.168.252.202/backup/software/dapper/latest/dapper-`uname -s`-`uname -m` > .dapper.tmp
+	@curl -sL https://releases.rancher.com/dapper/latest/dapper-`uname -s`-`uname -m` > .dapper.tmp
 	@@chmod +x .dapper.tmp
 	@./.dapper.tmp -v
 	@mv .dapper.tmp .dapper
@@ -15,6 +15,9 @@ trash: .dapper
 
 trash-keep: .dapper
 	./.dapper -m bind trash -k
+
+shell-bind: .dapper
+	./.dapper -m bind -s
 
 deps: trash
 

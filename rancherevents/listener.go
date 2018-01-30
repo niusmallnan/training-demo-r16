@@ -3,8 +3,8 @@ package rancherevents
 import (
 	revents "github.com/rancher/event-subscriber/events"
 
-	"github.com/niusmallnan/scale-subscriber/config"
-	reventhandlers "github.com/niusmallnan/scale-subscriber/rancherevents/eventhandlers"
+	"github.com/niusmallnan/training-demo/config"
+	reventhandlers "github.com/niusmallnan/training-demo/rancherevents/eventhandlers"
 )
 
 func ConnectToEventStream(conf config.Config) error {
