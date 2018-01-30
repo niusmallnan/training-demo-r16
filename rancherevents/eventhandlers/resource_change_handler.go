@@ -1,9 +1,9 @@
 package eventHandlers
 
 import (
+	log "github.com/Sirupsen/logrus"
 	revents "github.com/rancher/event-subscriber/events"
 	"github.com/rancher/go-rancher/client"
-	log "github.com/sirupsen/logrus"
 )
 
 type ResourceChangeHandler struct {

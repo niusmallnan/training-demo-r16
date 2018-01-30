@@ -3,10 +3,10 @@ package main
 import (
 	"os"
 
+	log "github.com/Sirupsen/logrus"
 	"github.com/niusmallnan/training-demo/config"
 	"github.com/niusmallnan/training-demo/healthcheck"
 	"github.com/niusmallnan/training-demo/rancherevents"
-	log "github.com/sirupsen/logrus"
 	"github.com/urfave/cli"
 )
 

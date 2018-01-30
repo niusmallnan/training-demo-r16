@@ -5,7 +5,7 @@ import (
 	"net/http"
 	"strconv"
 
-	log "github.com/sirupsen/logrus"
+	log "github.com/Sirupsen/logrus"
 )
 
 func healthcheck(w http.ResponseWriter, r *http.Request) {
