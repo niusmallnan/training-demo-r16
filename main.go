@@ -51,23 +51,25 @@ func main() {
 	app.Run(os.Args)
 }
 
-func launch(c *cli.Context) {
+func launch(c *cli.Context) error {
 	conf := config.Conf(c)
 
+	var err error
 	resultChan := make(chan error)
 
 	go func(rc chan error) {
-		err := rancherevents.ConnectToEventStream(conf)
+		err = rancherevents.ConnectToEventStream(conf)
 		log.Errorf("Rancher stream listener exited with error: %s", err)
 		rc <- err
 	}(resultChan)
 
 	go func(rc chan error) {
-		err := healthcheck.StartHealthCheck(conf.HealthCheckPort)
+		err = healthcheck.StartHealthCheck(conf.HealthCheckPort)
 		log.Errorf("HealthCheck exit with error: %s", err)
 		rc <- err
 	}(resultChan)
 
-	<-resultChan
+	err = <-resultChan
 	log.Info("Exiting...")
+	return err
 }
