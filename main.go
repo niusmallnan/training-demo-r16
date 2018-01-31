@@ -7,6 +7,7 @@ import (
 	"github.com/niusmallnan/training-demo/config"
 	"github.com/niusmallnan/training-demo/healthcheck"
 	"github.com/niusmallnan/training-demo/rancherevents"
+	"github.com/niusmallnan/training-demo/ranchermd"
 	"github.com/urfave/cli"
 )
 
@@ -47,6 +48,11 @@ func main() {
 			Usage:  "Number of workers for handling events",
 			EnvVar: "WORKER_COUNT",
 		},
+		cli.StringFlag{
+			Name:   "metadata-address",
+			Value:  config.DefaultMetadataAddress,
+			EnvVar: "RANCHER_METADATA_ADDRESS",
+		},
 	}
 	app.Run(os.Args)
 }
@@ -54,7 +60,12 @@ func main() {
 func launch(c *cli.Context) error {
 	conf := config.Conf(c)
 
-	var err error
+	watcher, err := ranchermd.NewWatcher(c.String("metadata-address"))
+	if err != nil {
+		log.Errorf("Rancher metadata watcher exited with error: %s", err)
+	}
+	watcher.Start()
+
 	resultChan := make(chan error)
 
 	go func(rc chan error) {

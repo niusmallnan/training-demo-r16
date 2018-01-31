@@ -2,6 +2,10 @@ package config
 
 import "github.com/urfave/cli"
 
+const (
+	DefaultMetadataAddress = "169.254.169.250"
+)
+
 type Config struct {
 	CattleURL       string
 	CattleAccessKey string
