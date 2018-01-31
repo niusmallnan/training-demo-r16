@@ -58,6 +58,10 @@ func main() {
 			Value:  config.DefaultMetadataAddress,
 			EnvVar: "RANCHER_METADATA_ADDRESS",
 		},
+		cli.BoolFlag{
+			Name:   "enable-metadata-watcher",
+			EnvVar: "RANCHER_ENABLE_MD_WATCHER",
+		},
 	}
 	app.Run(os.Args)
 }
@@ -69,11 +73,13 @@ func launch(c *cli.Context) error {
 	}
 	conf := config.Conf(c)
 
-	watcher, err := ranchermd.NewWatcher(c.String("metadata-address"))
-	if err != nil {
-		log.Errorf("Failed to create rancher metadata watcher: %v", err)
+	if c.Bool("enable-metadata-watcher") {
+		watcher, err := ranchermd.NewWatcher(c.String("metadata-address"))
+		if err != nil {
+			log.Errorf("Failed to create rancher metadata watcher: %v", err)
+		}
+		watcher.Start()
 	}
-	watcher.Start()
 
 	api, err := rancherapi.NewClient(conf)
 	if err != nil {
