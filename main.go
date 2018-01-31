@@ -6,6 +6,7 @@ import (
 	log "github.com/Sirupsen/logrus"
 	"github.com/niusmallnan/training-demo/config"
 	"github.com/niusmallnan/training-demo/healthcheck"
+	"github.com/niusmallnan/training-demo/rancherapi"
 	"github.com/niusmallnan/training-demo/rancherevents"
 	"github.com/niusmallnan/training-demo/ranchermd"
 	"github.com/urfave/cli"
@@ -70,21 +71,27 @@ func launch(c *cli.Context) error {
 
 	watcher, err := ranchermd.NewWatcher(c.String("metadata-address"))
 	if err != nil {
-		log.Errorf("Rancher metadata watcher exited with error: %s", err)
+		log.Errorf("Failed to create rancher metadata watcher: %v", err)
 	}
 	watcher.Start()
+
+	api, err := rancherapi.NewClient(conf)
+	if err != nil {
+		log.Errorf("Failed to create rancher api client: %v", err)
+	}
+	api.ListHost()
 
 	resultChan := make(chan error)
 
 	go func(rc chan error) {
 		err = rancherevents.ConnectToEventStream(conf)
-		log.Errorf("Rancher stream listener exited with error: %s", err)
+		log.Errorf("Rancher stream listener exited with error: %v", err)
 		rc <- err
 	}(resultChan)
 
 	go func(rc chan error) {
 		err = healthcheck.StartHealthCheck(conf.HealthCheckPort)
-		log.Errorf("HealthCheck exit with error: %s", err)
+		log.Errorf("HealthCheck exit with error: %v", err)
 		rc <- err
 	}(resultChan)
 
