@@ -21,6 +21,10 @@ func main() {
 	app.Action = launch
 
 	app.Flags = []cli.Flag{
+		cli.BoolFlag{
+			Name:   "debug, d",
+			EnvVar: "RANCHER_DEBUG",
+		},
 		cli.StringFlag{
 			Name:   "cattle-url",
 			Usage:  "URL for cattle API",
@@ -58,6 +62,10 @@ func main() {
 }
 
 func launch(c *cli.Context) error {
+	if c.Bool("debug") {
+		os.Setenv("RANCHER_CLIENT_DEBUG", "true")
+		log.SetLevel(log.DebugLevel)
+	}
 	conf := config.Conf(c)
 
 	watcher, err := ranchermd.NewWatcher(c.String("metadata-address"))
